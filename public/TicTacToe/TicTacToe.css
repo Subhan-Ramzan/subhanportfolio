@@ -1,57 +1,143 @@
-body {
-    background-color: #548687;
+/* Global Styling */
+* {
+    margin: 0;
+    padding: 0;
+    box-sizing: border-box;
+    font-family: "Segoe UI", Tahoma, Geneva, Verdana, sans-serif;
+  }
+  
+  body {
+    background: linear-gradient(135deg, #4158d0 0%, #c850c0 46%, #ffcc70 100%);
+    min-height: 100vh;
     display: flex;
-    text-align: center;
     justify-content: center;
-    flex-direction: column;
-    align-items: center;
-}
-
-main {
-    display: flex;
-    flex-direction: column;
-    height: 80vh;
-    width: 40vw;
-    justify-content: center;
-    text-align: center;
-    align-items: center;
-}
-
-h1 {
-    text-align: center;
-}
-
-.Game {
-    display: flex;
-    flex-wrap: wrap;
-    gap: 1.5vmin;
-    justify-content: center;
-}
-
-.btn {
-    height: 10vh;
-    width: 10vw;
-    background-color: rgba(223, 201, 201, 0.836);
-    border-radius: 5px;
-    border: none;
-    color: black;
-}
-
-.newbtn {
+    align-items: flex-start;
+    overflow-y: auto;
+    padding: 2rem;
     color: white;
-    background-color: black;
+  }
+  
+  /* Main Container */
+  main {
+    background: rgba(255, 255, 255, 0.1);
+    backdrop-filter: blur(20px);
+    border-radius: 20px;
+    padding: 1.5rem;
+    box-shadow: 0 8px 32px rgba(0, 0, 0, 0.25);
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    width: 100%;
+    max-width: 400px;
+    text-align: center;
+  }
+  
+  /* Title */
+  h1 {
+    font-size: 2rem;
+    margin-bottom: 1rem;
+    color: #fff;
+    text-shadow: 2px 2px 8px #0000005a;
+  }
+  
+  /* Game Board */
+  .Game {
+    display: grid;
+    grid-template-columns: repeat(3, 1fr);
+    gap: 10px;
+    width: 100%;
+  }
+  
+  /* Game Buttons */
+  .btn {
+    aspect-ratio: 1 / 1;
+    background: rgba(255, 255, 255, 0.15);
+    border: 2px solid rgba(255, 255, 255, 0.3);
+    border-radius: 12px;
+    font-size: 1.8rem;
+    font-weight: bold;
+    color: white;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+  }
+  
+  .btn:hover {
+    transform: scale(1.05);
+    background-color: rgba(255, 255, 255, 0.25);
+  }
+  
+  /* Winner Message */
+  .msg-container {
+    margin-bottom: 1rem;
+    background-color: rgba(0, 0, 0, 0.4);
+    padding: 1rem;
+    border-radius: 10px;
+    animation: fadeIn 0.5s ease-in-out;
+  }
+  
+  #winner {
+    font-size: 1.5rem;
+    margin-bottom: 0.5rem;
+    color: #fff700;
+  }
+  
+  /* Buttons */
+  button.newbtn,
+  #reset {
+    margin-top: 1rem;
+    background-color: #ff0080;
+    color: white;
+    padding: 10px 20px;
     border: none;
-    padding: 10px;
-    border-radius: 3px;
-}
-.hide{
+    border-radius: 10px;
+    font-size: 1rem;
+    font-weight: bold;
+    cursor: pointer;
+    transition: all 0.3s ease-in-out;
+  }
+  
+  button.newbtn:hover,
+  #reset:hover {
+    background-color: #d6006b;
+    transform: scale(1.05);
+  }
+  
+  .hide {
     display: none;
-}
-#reset{
-    margin-top: 5vh;
-    color: white;
-    background-color: black;
-    border: none;
-    padding: 10px;
-    border-radius: 3px;
-}
+  }
+  
+  /* Animations */
+  @keyframes fadeIn {
+    from {
+      opacity: 0;
+      transform: translateY(-20%);
+    }
+    to {
+      opacity: 1;
+      transform: translateY(0);
+    }
+  }
+  
+  /* Responsive Adjustments */
+  @media (max-width: 480px) {
+    main {
+      padding: 1rem;
+      max-width: 95%;
+    }
+  
+    h1 {
+      font-size: 1.5rem;
+    }
+  
+    .btn {
+      font-size: 1.5rem;
+    }
+  
+    button.newbtn,
+    #reset {
+      font-size: 0.9rem;
+      padding: 8px 16px;
+    }
+  }
+  
