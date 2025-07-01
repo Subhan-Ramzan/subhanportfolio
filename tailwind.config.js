@@ -18,6 +18,10 @@ module.exports = {
           "0%": { transform: "rotateX(0deg) rotateY(0deg)" },
           "100%": { transform: "rotateX(360deg) rotateY(360deg)" },
         },
+        spin: {
+          "0%": { transform: "rotate(0deg)" },
+          "100%": { transform: "rotate(360deg)" },
+        },
         scale: {
           "0%, 100%": { transform: "scale(1)" },
           "50%": { transform: "scale(1.2)" },
@@ -32,6 +36,7 @@ module.exports = {
         pulse: "pulse 2s infinite ease-in-out",
         scale: "scale 2s infinite ease-in-out",
         colorChange: "colorChange 2s infinite ease-in-out",
+        spin: "spin 1s linear infinite",
       },
     },
   },

@@ -15,10 +15,6 @@ export const authoptions = NextAuth({
       clientId: process.env.GOOGLE_CLIENT_ID,
       clientSecret: process.env.GOOGLE_CLIENT_SECRET,
     }),
-    FacebookProvider({
-      clientId: process.env.FACEBOOK_CLIENT_ID,
-      clientSecret: process.env.FACEBOOK_CLIENT_SECRET,
-    }),
   ],
   secret: process.env.NEXTAUTH_SECRET,
   callbacks: {
@@ -46,7 +42,7 @@ export const authoptions = NextAuth({
     async session({ session, token }) {
       await connectDB();
 
-      const dbUser = await User.findOne({ email: session.user.email });
+      const dbUser = await User.findOne({ email: session?.user?.email });
       if (dbUser) {
         session.user.id = dbUser._id;
       }

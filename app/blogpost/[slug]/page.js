@@ -57,18 +57,23 @@ export default async function Page({ params }) {
     <div className="bg-white text-gray-800">
       <div className="max-w-6xl mx-auto p-6 sm:p-8 md:p-10 lg:p-12">
         {/* Header Section with Image */}
-        <div className="mb-6">
-          <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
-            {data.title}
-          </h1>
-          <p className="text-sm sm:text-base mb-2 border-l-4 border-gray-500 pl-4 italic text-gray-600">
-            &quot;{data.description}&quot;
-          </p>
-          <div className="flex gap-4 flex-wrap mb-4">
-            <p className="text-xs sm:text-sm text-gray-500 italic">
-              By {data.author}
+        <div className="flex justify-between">
+          <div className="mb-6">
+            <h1 className="text-3xl sm:text-4xl md:text-5xl font-bold text-gray-800 mb-4">
+              {data.title}
+            </h1>
+            <p className="text-sm sm:text-base mb-2 border-l-4 border-gray-500 pl-4 italic text-gray-600">
+              &quot;{data.description}&quot;
             </p>
-            <p className="text-xs sm:text-sm text-gray-500">{data.date}</p>
+            <div className="flex gap-4 flex-wrap mb-4">
+              <p className="text-xs sm:text-sm text-gray-500 italic">
+                By {data.author}
+              </p>
+              <p className="text-xs sm:text-sm text-gray-500">{data.date}</p>
+            </div>
+          </div>
+          <div>
+            <OnThisPage htmlContent={htmlContent} />
           </div>
         </div>
 
@@ -79,7 +84,6 @@ export default async function Page({ params }) {
         ></div>
 
         {/* Table of Contents */}
-        <OnThisPage htmlContent={htmlContent} />
       </div>
     </div>
   );

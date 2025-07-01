@@ -9,7 +9,7 @@ import {
   FaEnvelope,
   FaBeer,
   FaReact,
-  FaBlogger
+  FaBlogger,
 } from "react-icons/fa";
 import { useSession, signOut } from "next-auth/react";
 import { useRouter } from "next/navigation";
@@ -91,8 +91,9 @@ const Navbar = () => {
   return (
     <>
       <div
-        className={`w-full top-0 left-0 transition-opacity duration-300 ${isScrolled ? "bg-gray-900/70 fixed shadow-lg" : "bg-gray-900"
-          } z-50`}
+        className={`w-full top-0 left-0 transition-opacity duration-300 ${
+          isScrolled ? "bg-gray-900/70 fixed shadow-lg" : "bg-gray-900"
+        } z-50`}
       >
         <nav className="container mx-auto px-4 py-3 flex justify-between items-center">
           <div className="flex items-center">
@@ -146,8 +147,12 @@ const Navbar = () => {
               </Link>
             </li>
             <li>
-              <Link href='/blog'
-                className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-300 transform hover:scale-105 hover:rotate-3"><FaBlogger/> Blog</Link>
+              <Link
+                href="/blog"
+                className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-300 transform hover:scale-105 hover:rotate-3"
+              >
+                <FaBlogger /> Blog
+              </Link>
             </li>
           </ul>
 
@@ -159,7 +164,7 @@ const Navbar = () => {
                   {session?.user?.image ? (
                     <Image
                       src={session.user.image.url || session.user.image}
-                      alt="User Profile"
+                      alt="User PProfile"
                       width={40}
                       height={40}
                       className="rounded-full object-cover cursor-pointer"
@@ -167,7 +172,7 @@ const Navbar = () => {
                   ) : publicId ? (
                     <CldImage
                       src={publicId}
-                      alt="User Profile"
+                      alt="User Prrofile"
                       width={40}
                       height={40}
                       className="rounded-full object-cover cursor-pointer"
@@ -224,8 +229,9 @@ const Navbar = () => {
               className="text-white focus:outline-none"
             >
               <FaBars
-                className={`h-6 w-6 transition-transform duration-300 ${isMenuOpen ? "rotate-90" : ""
-                  } transform hover:scale-110`}
+                className={`h-6 w-6 transition-transform duration-300 ${
+                  isMenuOpen ? "rotate-90" : ""
+                } transform hover:scale-110`}
               />
             </button>
           </div>
@@ -233,10 +239,11 @@ const Navbar = () => {
 
         {/* Mobile Menu */}
         <div
-          className={`md:hidden transition-all duration-300 ease-in-out transform ${isMenuOpen
-            ? "max-h-screen opacity-100 translate-y-0 py-2"
-            : "max-h-0 opacity-0 -translate-y-4"
-            } overflow-hidden bg-gray-900 px-4`}
+          className={`md:hidden transition-all duration-300 ease-in-out transform ${
+            isMenuOpen
+              ? "max-h-screen opacity-100 translate-y-0 py-2"
+              : "max-h-0 opacity-0 -translate-y-4"
+          } overflow-hidden bg-gray-900 px-4`}
         >
           <ul className="flex flex-col space-y-4">
             <li>

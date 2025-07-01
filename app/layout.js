@@ -19,7 +19,7 @@ export default function RootLayout({ children }) {
         <SessionWrapper>
           {/* <ProductProvider> */}
           <Navbar />
-          <div className="min-h-[80vh] inset-0 -z-10 items-center justify-center bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]">
+          <div className="min-h-[80vh] inset-0 -z-10 items-center overflow-hidden justify-center bg-[#000000] bg-[radial-gradient(#ffffff33_1px,#00091d_1px)] bg-[size:20px_20px]">
             {children}
           </div>
           <Footer />
