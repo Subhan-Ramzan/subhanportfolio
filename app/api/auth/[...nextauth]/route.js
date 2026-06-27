@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import connectDB from "@/ignore/connectDB";
+import connectDB from "@/utils/connectDB";
 import User from "@/models/NextAuth";
 
 export const authoptions = NextAuth({
