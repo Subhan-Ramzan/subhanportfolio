@@ -1,41 +1,22 @@
 // pages/profile/page.js
 "use client";
 import React, { useState, useEffect } from "react";
-import axios from "axios";
 import "@/app/index.css"; // Ensure this includes Tailwind CSS setup
-import { useSession } from "next-auth/react";
-import { useRouter } from "next/navigation";
 import Image from "next/image";
+import axios from "axios";
+import Protect from "../protected/page";
 
 const Profile = () => {
+  const BackendUrl = process.env.NEXT_PUBLIC_BACKEND;
   const [supporters, setSupporters] = useState([]);
   const [name, setName] = useState("");
   const [message, setMessage] = useState("");
   const [amount, setAmount] = useState("");
-  const router = useRouter();
-  const { data: session, status: sessionStatus } = useSession();
-
-  useEffect(() => {
-    const fetchCookiesData = async () => {
-      try {
-        const response = await axios.get("/api/protected", {
-          withCredentials: true, // Allows sending cookies with request
-        });
-      } catch (error) {
-        console.error("Failed to fetch protected data:", error);
-        router.push("/login");
-      }
-    };
-
-    if (sessionStatus === "unauthenticated") {
-        fetchCookiesData();
-    }
-  }, [sessionStatus, router]);
 
   useEffect(() => {
     const fetchSupporters = async () => {
       try {
-        const response = await axios.get("/api/getSupporters");
+        const response = await axios.get(`${BackendUrl}/api/supporter/call`);
         const data = response.data;
         if (data && Array.isArray(data.supporters)) {
           setSupporters(data.supporters);
@@ -59,7 +40,7 @@ const Profile = () => {
         amount: `$${amount}`,
       };
       try {
-        const response = await axios.post("/api/saveSupporter", {
+        const response = await axios.post(`${BackendUrl}/api/supporter/save`, {
           name,
           message,
           amount: `$${amount}`,
@@ -79,18 +60,18 @@ const Profile = () => {
   };
 
   return (
-    <>
+    <Protect>
       <div className="relative">
         <Image
           className="w-full h-[50vh] object-cover object-center"
-          src="" // Vibrant Background Image
+          src="https://png.pngtree.com/thumb_back/fh260/background/20240913/pngtree-stunning-red-and-blue-smoke-images-for-download-image_16191211.jpg" // Vibrant Background Image
           alt="Background Image"
           width={1920}
           height={810}
         />
         <div className="absolute top-1/2 left-1/2 transform -translate-x-1/2 -translate-y-1/2 flex flex-col items-center text-center bg-black bg-opacity-50 p-5 rounded-lg shadow-lg">
           <Image
-            src="https://c10.patreonusercontent.com/4/patreon-media/p/campaign/4842667/aa52624d1cef47ba91c357da4a7859cf/eyJoIjoxMDgwLCJ3IjoxMDgwfQ%3D%3D/4.gif?token-time=1721952000&token-hash=K1x4QNfKdby2GOrqWVGFm-GowwJ08qZFEDvbeDfQdkc%3D"
+            src="https://tse4.mm.bing.net/th/id/OIP.23wzRzOwtSR-WAQZM4mWzAHaHa?rs=1&pid=ImgDetMain&o=7&rm=3"
             alt="Creator Public Page Avatar"
             width={150}
             height={150}
@@ -162,7 +143,7 @@ const Profile = () => {
           <p className="text-gray-400">9,1729 members . 82 posts . $15,450</p>
         </div>
       </div>
-    </>
+    </Protect>
   );
 };
 

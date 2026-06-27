@@ -3,6 +3,7 @@ import { useEffect } from "react";
 import Head from "next/head";
 import Link from "next/link";
 import Image from "next/image";
+import Protect from "../protected/page";
 export default function About() {
   useEffect(() => {
     const sections = document.querySelectorAll("section");
@@ -21,7 +22,7 @@ export default function About() {
   }, []);
 
   return (
-    <>
+    <Protect>
       <Head>
         <title>About Me | Subhan Ramzan Portfolio</title>
         <meta
@@ -330,6 +331,6 @@ export default function About() {
           transition: opacity 0.7s ease, transform 0.7s ease;
         }
       `}</style>
-    </>
+    </Protect>
   );
 }

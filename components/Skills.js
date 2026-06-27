@@ -31,7 +31,7 @@ const Skills = () => {
 
     return (
         <>
-            <div className='grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full h-full px-4 pb-6 mx-auto'>
+            <div className=' grid md:grid-cols-3 sm:grid-cols-2 grid-cols-1 w-full h-full px-4 pb-6 mx-auto'>
                 {Values.map((value, index) => (
 
                     <div className='flex gap-2' key={index}>
@@ -57,16 +57,24 @@ const Skills = () => {
                     </div>
                 ))}
             </div>
-            <div className="grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl mx-auto mb-8 p-4 rounded-2xl text-center text-blue-700">
+            <div className="text-white grid grid-cols-2 md:grid-cols-4 gap-6 w-full max-w-4xl mx-auto mb-8 p-4 rounded-2xl text-center">
 
                 {Experience.map((exp, index) => {
                     const IconComponent = icons[exp.icon];
                     return (
-                        <div key={index} className="flex flex-col items-center rounded-xl p-4 hover:scale-105 transition duration-300 ease-in-out">
-                            <div className="text-blue-600 font-bold text-xl">{exp.value}</div>
-                            <IconComponent size={40} className="my-3 text-blue-700" />
-                            <p className="text-base font-semibold">{exp.name}</p>
+                      <div
+                        key={index}
+                        className="text-white flex flex-col items-center rounded-xl p-4 hover:scale-105 transition duration-300 ease-in-out"
+                      >
+                        <div className="font-bold text-xl">
+                          {exp.value}
                         </div>
+                        <IconComponent
+                          size={40}
+                          className="my-3 text-blue-700"
+                        />
+                        <p className="text-base font-semibold">{exp.name}</p>
+                      </div>
                     );
                 })}
 

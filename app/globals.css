@@ -1,6 +1,4 @@
-@tailwind base;
-@tailwind components;
-@tailwind utilities;
+@import "tailwindcss";
 
 * {
   scrollbar-width: thin;
@@ -27,8 +25,6 @@
   background-color: #4a3d61;
 }
 
-/* 
- */
 code[data-line-numbers] {
   counter-reset: line;
 }
@@ -44,8 +40,6 @@ mark[data-highlighted-chars] {
 code[data-line-numbers] > [data-line]::before {
   counter-increment: line;
   content: counter(line);
-
-  /* Other styling */
   display: inline-block;
   width: 0.75rem;
   margin-right: 2rem;
@@ -64,11 +58,3 @@ code[data-line-numbers-max-digits="3"] > [data-line]::before {
 code[data-line-numbers-max-digits="4"] > [data-line]::before {
   width: 2.25rem;
 }
-
-/* #variables-and-data-types {
-  font-weight: bold;
-  font-size: x-large;
-  flex: auto;
-  justify-content: center;
-  align-items: center;
-} */

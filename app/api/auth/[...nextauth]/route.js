@@ -2,7 +2,7 @@ import NextAuth from "next-auth";
 import GithubProvider from "next-auth/providers/github";
 import GoogleProvider from "next-auth/providers/google";
 import FacebookProvider from "next-auth/providers/facebook";
-import connectDB from "@/utils/connectDB";
+import connectDB from "@/ignore/connectDB";
 import User from "@/models/NextAuth";
 
 export const authoptions = NextAuth({
@@ -35,8 +35,8 @@ export const authoptions = NextAuth({
 
         return true;
       } catch (error) {
-        console.error('Error in signIn callback:', error);
-        return false; 
+        console.error("Error in signIn callback:", error);
+        return false;
       }
     },
     async session({ session, token }) {

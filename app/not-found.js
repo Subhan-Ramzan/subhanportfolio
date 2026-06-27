@@ -26,7 +26,7 @@ export default function NotFound() {
                     </h2>
                 </div>
                 <Link href="/">
-                    <button className="bg-gradient-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 transform hover:scale-105">
+                    <button className="bg-linear-to-r from-red-500 to-red-600 hover:from-red-600 hover:to-red-700 text-white font-bold py-4 px-8 rounded-lg shadow-lg hover:shadow-xl focus:outline-none focus:ring-2 focus:ring-red-500 transition-all duration-300 transform hover:scale-105">
                         Go back to Home
                     </button>
                 </Link>
@@ -45,7 +45,7 @@ export default function NotFound() {
                         />
                         <button
                             type="submit"
-                            className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-all duration-300 transform hover:scale-105"
+                            className="bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-3 px-5 rounded-lg transition-all duration-300 transform hover:scale-105"
                         >
                             Search
                         </button>

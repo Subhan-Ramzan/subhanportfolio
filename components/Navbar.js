@@ -11,36 +11,27 @@ import {
   FaReact,
   FaBlogger,
 } from "react-icons/fa";
-import { useSession, signOut } from "next-auth/react";
+import { signOut, useSession } from "next-auth/react";
 import { useRouter } from "next/navigation";
-import axios from "axios";
 import { ToastContainer, toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import Image from "next/image";
 import { CldImage } from "next-cloudinary";
 import { FaRegCircleUser } from "react-icons/fa6";
+import { useUser } from "@/app/context/usercontext";
+import axios from "axios";
 
 const Navbar = () => {
-  const { data: session, status } = useSession();
-  const [userData, setUserData] = useState(null);
+  const BackendUrl = process.env.NEXT_PUBLIC_BACKEND;
   const [isMenuOpen, setIsMenuOpen] = useState(false);
   const [isScrolled, setIsScrolled] = useState(false);
   const router = useRouter();
   const [publicId, setPublicId] = useState(null);
+  const { userData, setUserData } = useUser();
+  const { data: session, status } = useSession();
 
   const toggleMenu = () => {
     setIsMenuOpen(!isMenuOpen);
-  };
-
-  const logoutCookies = async () => {
-    try {
-      await axios.post("/api/logout");
-      setUserData(null);
-      toast.success("Logout successful!"); // Notify successful logout
-    } catch (err) {
-      console.error("Logout Error:", err);
-      toast.error("Logout failed. Please try again."); // Notify error on logout
-    }
   };
 
   const phoneNumber = "+923250826305"; // Replace with the actual phone number
@@ -48,35 +39,31 @@ const Navbar = () => {
   const whatsappUrl = `https://wa.me/${phoneNumber}?text=${textMessage}`;
 
   useEffect(() => {
-    console.log("status:", status); // Debugging line
-    console.log("userData:", userData); // Debugging line
-
-    const fetchCookieData = async () => {
+    const checkAuth = async () => {
       try {
-        const response = await axios.get("/api/protected", {
-          withCredentials: true,
-        });
-        setUserData(response.data.user);
-        const user = response.data.user;
-        const id = user.id;
-
-        if (id) {
-          const imageResponse = await axios.get(`/api/profileimage/${id}`);
-          setPublicId(imageResponse.data.public_id);
-        } else {
-          console.log("No user ID found; skipping profile image fetch");
+        const token = localStorage.getItem("token");
+        if (status === "authenticated") {
+          console.log("session is");
+          console.log(session);
+          setUserData(session.user);
+          return;
         }
-      } catch (error) {
-        console.log("Failed to fetch protected data:", error);
-        setUserData(null);
-        console.log("User data set to null due to fetch error");
-      }
+        if (token) {
+          const res = await axios.get(`${BackendUrl}/api/protected`, {
+            headers: {
+              Authorization: `Bearer ${token}`,
+            },
+          });
+          if (res.status === 200) {
+            console.log(res.data);
+            setUserData(res.data.user);
+            return;
+          }
+        }
+      } catch (error) {}
     };
-
-    if (status === "unauthenticated" && userData === null) {
-      fetchCookieData();
-    }
-  }, [status, userData, router]);
+    checkAuth();
+  }, [session, status]);
 
   useEffect(() => {
     const handleScroll = () => {
@@ -87,6 +74,10 @@ const Navbar = () => {
       window.removeEventListener("scroll", handleScroll);
     };
   }, []);
+
+  const handleDelete = () => {
+    localStorage.removeItem("token");
+  };
 
   return (
     <>
@@ -133,7 +124,7 @@ const Navbar = () => {
                 href="/login"
                 className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-300 transform hover:scale-105 hover:rotate-3"
               >
-                <FaServicestack /> Services
+                <FaServicestack /> Profile
               </Link>
             </li>
             <li>
@@ -159,12 +150,12 @@ const Navbar = () => {
           {/* Auth & Cart Section */}
           <div className="hidden md:flex items-center gap-2">
             <div className="md:block hidden items-center">
-              {status === "authenticated" || userData !== null ? (
+              {/* {userData ? (
                 <Link href="/profile">
-                  {session?.user?.image ? (
+                  {userData.image ? (
                     <Image
-                      src={session.user.image.url || session.user.image}
-                      alt="User PProfile"
+                      src={session.user.image}
+                      alt="User Pprofile"
                       width={40}
                       height={40}
                       className="rounded-full object-cover cursor-pointer"
@@ -181,24 +172,33 @@ const Navbar = () => {
                     <FaRegCircleUser className="text-3xl cursor-pointer" />
                   )}
                 </Link>
+              ) : ( */}
+              {userData ? (
+                <Link href="/profile">
+                  <FaRegCircleUser className="text-2xl text-white md:text-3xl cursor-pointer" />
+                </Link>
               ) : (
                 <Link href="/login">
                   <FaRegCircleUser className="text-2xl text-white md:text-3xl cursor-pointer" />
                 </Link>
               )}
+              {/* )} */}
             </div>
-            {status === "authenticated" || userData !== null ? (
+            {userData ? (
               <>
                 <p className="text-white">
                   Welcome,{" "}
-                  {session?.user?.name ||
-                    userData.username ||
-                    session?.user?.email?.split(/(?=\d)/)[0]}
+                  {userData?.username ||
+                    userData?.name ||
+                    userData?.email?.split("@")[0] ||
+                    "User"}
                 </p>
+                {/* <p>{session?.user}</p> */}
                 <button
                   onClick={async () => {
+                    handleDelete();
                     await signOut();
-                    await logoutCookies();
+                    setUserData(null);
                   }}
                   className="bg-red-500 hover:bg-red-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300"
                 >
@@ -214,7 +214,7 @@ const Navbar = () => {
                   Login
                 </Link>
                 <Link href="/signup">
-                  <button className="bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
+                  <button className="bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 px-4 rounded-lg transition-colors duration-300">
                     Sign up
                   </button>
                 </Link>
@@ -267,7 +267,7 @@ const Navbar = () => {
                 href="/login"
                 className="flex items-center gap-2 text-white hover:text-blue-500 transition-colors duration-300 transform hover:scale-105 hover:rotate-3"
               >
-                <FaServicestack /> Services
+                <FaServicestack /> Profile
               </Link>
             </li>
             <li>
@@ -282,18 +282,19 @@ const Navbar = () => {
             </li>
             {/* Adding Login and Signup to the mobile menu */}
             <div className="flex flex-col items-center gap-2 md:hidden">
-              {status === "authenticated" || userData !== null ? (
+              {userData ? (
                 <>
                   <p className="text-white">
                     Welcome,{" "}
-                    {session?.user?.name ||
-                      userData.username ||
-                      session?.user?.email?.split(/(?=\d)/)[0]}
+                    {userData.username ||
+                      userData.name ||
+                      userData.email?.split(/(?=\d)/)[0]}
                   </p>
                   <button
                     onClick={async () => {
+                      handleDelete();
                       await signOut();
-                      await logoutCookies();
+                      setUserData(null);
                     }}
                     className="w-full bg-red-500 hover:bg-red-700 text-white font-bold py-2 rounded-lg transition-colors duration-300"
                   >
@@ -304,14 +305,14 @@ const Navbar = () => {
                 <>
                   <li className="w-full">
                     <Link href="/login">
-                      <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-colors duration-300">
+                      <button className="w-full bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-colors duration-300">
                         Login
                       </button>
                     </Link>
                   </li>
                   <li className="w-full">
                     <Link href="/signup">
-                      <button className="w-full bg-gradient-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-colors duration-300">
+                      <button className="w-full bg-linear-to-r from-purple-500 to-blue-500 hover:from-purple-700 hover:to-blue-700 text-white font-bold py-2 rounded-lg transition-colors duration-300">
                         Sign up
                       </button>
                     </Link>

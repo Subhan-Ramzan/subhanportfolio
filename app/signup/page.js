@@ -3,15 +3,15 @@ import { useState, useEffect } from "react";
 import axios from "axios";
 import { useRouter } from "next/navigation";
 import Link from "next/link";
-import { signIn, signOut, useSession } from "next-auth/react";
+import { useSession } from "next-auth/react";
 import Head from "next/head";
-import { ToastContainer, toast } from "react-toastify";
+import { toast } from "react-toastify";
 import "react-toastify/dist/ReactToastify.css";
 import { FaCloudUploadAlt } from "react-icons/fa";
-import Image from "next/image";
 import { CldImage, CldUploadWidget } from "next-cloudinary";
 
 const Signup = () => {
+  const BackendUrl = process.env.NEXT_PUBLIC_BACKEND;
   const [form, setForm] = useState({
     username: "",
     email: "",
@@ -23,7 +23,6 @@ const Signup = () => {
   const [success, setSuccess] = useState(null);
   const router = useRouter();
   const [loading, setLoading] = useState(false);
-  const [uploading, setUploading] = useState(false);
   const { data: session, status: sessionStatus } = useSession();
 
   useEffect(() => {
@@ -34,11 +33,6 @@ const Signup = () => {
           router.push("/read");
           return;
         }
-
-        // Check if cookie is present by making a request
-        const response = await axios.get("/api/protected", {
-          withCredentials: true,
-        });
 
         if (response.status === 200 && response.data?.user) {
           router.push("/profile");
@@ -62,11 +56,17 @@ const Signup = () => {
 
     try {
       const formData = { ...form, profileImage: publicId }; // Use publicId as profileImage
-      const response = await axios.post("/api/signup", formData);
-      setSuccess("Signup successful");
-      setError(null);
-      toast.success("Account created successfully!");
-      router.push("/verify");
+      const response = await axios.post(
+        `${BackendUrl}/api/signup/create`,
+        formData,
+      );
+      if (response.status === 201) {
+        setSuccess("Signup successful");
+        setError(null);
+        toast.success("Account created successfully!");
+        router.push("/login");
+        return;
+      }
     } catch (error) {
       if (error.response) {
         setError(error.response.data.message || "An error occurred");
@@ -113,7 +113,7 @@ const Signup = () => {
   return (
     <>
       <Head>
-        <title>Sign Up | Subhan Ramzan Portfolio</title>
+        <title>Sign Up | Subhan Website Portfolio</title>
         <meta
           name="description"
           content="Create your account on Subhan Ramzan's portfolio. Join now to access exclusive features, manage your projects, and connect with the community."
@@ -128,19 +128,12 @@ const Signup = () => {
         />
         <meta
           property="og:url"
-          content="https://watchmovie-nine.vercel.app/signup"
+          content="https://subhanwebsite.vercel.app/signup"
         />
         <meta property="og:type" content="website" />
       </Head>
 
-      <div className="min-h-screen py-4 flex flex-col justify-center items-center bg-[radial-gradient(125%_125%_at_50%_10%,#000_40%,#63e_100%)] px-4">
-        <Link href="/">
-          <span className="text-3xl md:text-4xl font-bold text-white hover:text-gray-300 transition duration-300 text-center">
-            <span className="text-blue-400">&lt;</span>
-            Watch
-            <span className="text-blue-400">Movie/&gt;</span>
-          </span>
-        </Link>
+      <div className="min-h-screen py-4 flex flex-col justify-center items-center bg-[radial-linear(125%_125%_at_50%_10%,#000_40%,#63e_100%)] px-4">
         <div className="mt-8 w-full max-w-md">
           <h2 className="text-center text-3xl font-bold text-white">
             Create an account
@@ -167,7 +160,7 @@ const Signup = () => {
                       className={`cursor-pointer rounded-full relative w-40 h-40 shadow-lg hover:shadow-xl transform hover:scale-105 overflow-hidden ${
                         publicId
                           ? ""
-                          : "border-2 border-dashed border-gray-300 bg-gradient-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-blue-500 hover:via-green-500 hover:to-purple-500 transition-all duration-500 ease-in-out"
+                          : "border-2 border-dashed border-gray-300 bg-linear-to-r from-indigo-500 via-purple-500 to-pink-500 hover:from-blue-500 hover:via-green-500 hover:to-purple-500 transition-all duration-500 ease-in-out"
                       }`}
                       onClick={(e) => {
                         e.preventDefault();
@@ -257,7 +250,7 @@ const Signup = () => {
               <div>
                 <button
                   type="submit"
-                  className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-bold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-2 focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
+                  className={`flex w-full justify-center rounded-md bg-indigo-600 px-3 py-1.5 text-lg font-bold text-white shadow-sm hover:bg-indigo-500 focus-visible:outline focus-visible:outline-offset-2 focus-visible:outline-indigo-600 ${
                     loading ? "cursor-not-allowed bg-gray-400" : ""
                   }`}
                   disabled={loading} // Disable button when loading

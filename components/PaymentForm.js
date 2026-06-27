@@ -97,7 +97,7 @@ const PaymentForm = () => {
       <div className="w-full">
         <button
           type="submit"
-          className="w-full bg-gradient-to-r from-purple-700 to-blue-700 hover:from-purple-900 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg"
+          className="w-full bg-linear-to-r from-purple-700 to-blue-700 hover:from-purple-900 hover:to-blue-900 text-white font-bold py-2 px-4 rounded-lg"
         >
           Pay
         </button>
