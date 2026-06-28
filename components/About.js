@@ -22,7 +22,7 @@ const projectSections = [
       {
         image: "/Trading-Algo.png",
         alt: "Trading Algo",
-        link: "/RPS/RockPaperScissor.html",
+        link: "https://subhan-trading-frontend.vercel.app",
       },
       {
         image: "/safepass.jpeg",
